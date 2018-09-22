@@ -1,0 +1,5 @@
+This is a Private Project by Tim Jin
+
+The project use python django for web framework and MySQL for local database.
+The project can crawl all the mobile phones' information from JD.com, store them into local database and
+show then in the form of webpage powered by keyword search engine.

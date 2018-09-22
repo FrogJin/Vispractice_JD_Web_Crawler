@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Mobile Details</title>
+		<style type="text/css">
+			.detail_table {position: absolute; right: 12px; width: 360px; height: 24px; width: 98%; cellpadding: 5px; cellspacing: 5px;}
+			td {height: 48px; text-align:center; font-size: 20px;}
+		</style>
+	<head>
+	<script type="text/javascript">
+		function get_img(img_url){
+			var td_img = document.getElementById("td_img");
+			td_img.innerHTML = "<img src='https://{img_url}'>".replace("{img_url}", img_url);
+		}
+	</script>
+	<body>
+		<h1 style="text-align: center; margin-bottom: 36px">商品详情</h1>
+		<table class="detail_table" border="1">
+			<tr>
+				<td width="180">商品名称</td>
+				<td>{{ mobile.name }}</td>
+				<td width="480" rowspan="10" id="td_img"></td>
+			</tr>
+			<tr>
+				<td width="180">商品编码</td>
+				<td>{{ mobile.code }}</td>
+			</tr>
+			{% for parameter in parameters %}
+				{% if parameter.name == "图片网址" %}
+					<script>get_img("{{ parameter.value }}")</script>
+				{% else %}
+					<tr>
+						<td width = "180">{{ parameter.name }}</td>
+						{% if forloop.counter <= 8 %}
+							<td>{{ parameter.value }}</td>				
+						{% else %}
+							<td colspan="2">{{ parameter.value }}</td>
+						{% endif %}
+					</tr>
+				{% endif %}
+			{% endfor %}				
+		</table>
+	</body>
+</html>

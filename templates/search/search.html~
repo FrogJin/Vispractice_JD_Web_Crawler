@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>JD Mobile Database</title>
+		<style type="text/css">
+			#container {width: 1070px; margin: 0 auto;}
+			.wrap {position: absolute; top: 0px; right: 6px; width: 360px; height: 24px;}
+			.result_table {position: absolute; top: 132px; left: 12px; right: 12px;}
+			.hr_blue {height: 10px; border: none; border-top: 10px groove skyblue;}
+		</style>
+	</head>
+	<script type="text/javascript">
+		function getQueryString(){
+			var query = location.search.match(new RegExp("[\?\&][^\?\&]+=[^\?\&]+","g"));
+			if (query == null){ return ""; }
+			return query[0].substring(3)
+		}
+		function createTable(){
+			var query = getQueryString();
+			if (query !== "") {
+				var rTable = document.createElement("table");
+				rTable.border = "1";
+				rTable.width = "98%";
+				rTable.cellpadding = "5";
+				rTable.cellspacing = "5";
+				var tr = rTable.insertRow(rTable.rows.length);
+				var td = tr.insertCell(tr.cells.length);
+				td.innerHTML = query;
+				document.getElementById("container").appendChild(rTable);
+			}
+			/*
+			
+				for (var i = 0; i < results.length; i++) {
+					var result = results[i];
+					var tr = rTable.insertRow(rTable.rows.length);
+					var td_name = tr.insertCell(tr.cells.length);
+					td_name.innerHTML = result["name"];
+					var td_code = tr.insertCell(tr.cells.length);
+					td_code.innerHTML = result["code"];
+					var td_para = tr.insertCell(tr.cells.length);
+					all_para = result["parameter"].split(",");
+					para_html = "<ul>";
+					for (var j = 0; j < all_para.length; j++) { para_html += "<li>" + all_para[j] + "</li>"; }
+					para_html += "</ul>";
+					td_para.innerHTML = para_html;
+				}
+
+				document.getElementById("container").appendChild(rTable);
+			}*/
+		}
+	</script>
+	<body>
+		<h1 style="text-align: center; margin-bottom: 36px">京东手机信息数据库</h1>
+		<hr class="hr_blue"/>
+		<div id="container">
+			<div class="wrap">
+				<form action="." method="GET">
+					<h4>请输入商品信息进行搜索</h4>
+					<input type="text" name="q" value="{{query|escape}}">
+					<button type="submit" id="Submit" onclick="return check(this.form)">提交</button>
+				</form>
+			</div>
+			{% if query %}
+				<table class="result_table" border="1" width="98%" cellpadding="5" cellspacing="5">
+					{% for result in page.object_list %}
+						<tr>
+							<td>{{ result.object.p_PID }}</td>
+						</tr>
+					{% empty %}
+						<p>No Results Found</p>
+					{% endfor %}
+				</table>
+				{% if page.has_previous or page.has_next %}
+			    		<div>
+						{% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
+						|
+						{% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
+			    		</div>
+				{% endif %}
+			{% endif %}
+		</div>
+	</body>
+</html>
